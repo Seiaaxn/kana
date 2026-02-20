@@ -1,9 +1,9 @@
+// src/components/home/Header.jsx
 import { useState, useEffect, useRef } from 'react';
 import { Search, Bell, X, Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
 
-const NOTIF_KEY = 'kanaverse_notifications';
+const NOTIF_KEY = 'animeplay_notifications';
 
 const defaultNotifications = [
     {
@@ -48,14 +48,12 @@ const saveNotifications = (notifs) => {
 };
 
 const Header = ({ scrolled }) => {
-    const { user } = useAuth();
     const [showNotifs, setShowNotifs] = useState(false);
     const [notifications, setNotifications] = useState(getNotifications);
     const panelRef = useRef(null);
 
     const unreadCount = notifications.filter(n => !n.read).length;
 
-    // Click outside to close
     useEffect(() => {
         const handler = (e) => {
             if (panelRef.current && !panelRef.current.contains(e.target)) {
@@ -88,22 +86,19 @@ const Header = ({ scrolled }) => {
         <header className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
             scrolled ? 'glass border-b border-white/5' : 'bg-gradient-to-b from-black/70 to-transparent'
         }`}>
-            <div className="flex items-center justify-between px-4 h-13" style={{height: '52px'}}>
-                {/* Logo */}
+            <div className="flex items-center justify-between px-4" style={{ height: '52px' }}>
                 <div className="flex items-center gap-1">
                     <span className="text-base font-bold tracking-tight">
-                        <span className="text-white">Kana</span>
-                        <span className="text-primary-400">verse</span>
+                        <span className="text-white">Anime</span>
+                        <span className="text-primary-400">Play</span>
                     </span>
                 </div>
 
-                {/* Actions */}
                 <div className="flex items-center gap-1">
                     <Link to="/search" className="p-2 hover:bg-white/8 rounded-full transition-colors">
                         <Search size={18} className="text-gray-400" />
                     </Link>
 
-                    {/* Notification Bell */}
                     <div className="relative" ref={panelRef}>
                         <button
                             onClick={() => setShowNotifs(v => !v)}
@@ -115,10 +110,8 @@ const Header = ({ scrolled }) => {
                             )}
                         </button>
 
-                        {/* Notification Panel */}
                         {showNotifs && (
                             <div className="absolute right-0 top-full mt-2 w-80 glass-strong border border-white/8 rounded-xl overflow-hidden animate-fade-in shadow-2xl">
-                                {/* Header */}
                                 <div className="flex items-center justify-between px-4 py-3 border-b border-white/5">
                                     <span className="text-sm font-semibold text-white">Notifications</span>
                                     {unreadCount > 0 && (
@@ -132,7 +125,6 @@ const Header = ({ scrolled }) => {
                                     )}
                                 </div>
 
-                                {/* List */}
                                 <div className="max-h-72 overflow-y-auto">
                                     {notifications.length === 0 ? (
                                         <div className="py-8 text-center text-gray-500 text-sm">
@@ -147,9 +139,7 @@ const Header = ({ scrolled }) => {
                                                     notif.read ? 'hover:bg-white/3' : 'bg-primary-400/5 hover:bg-primary-400/8'
                                                 }`}
                                             >
-                                                {/* Dot */}
                                                 <div className={`mt-1.5 w-2 h-2 rounded-full flex-shrink-0 ${notif.read ? 'bg-transparent' : 'bg-primary-400'}`} />
-                                                
                                                 <div className="flex-1 min-w-0">
                                                     <p className={`text-xs font-medium mb-0.5 ${notif.read ? 'text-gray-400' : 'text-white'}`}>
                                                         {notif.title}
@@ -157,7 +147,6 @@ const Header = ({ scrolled }) => {
                                                     <p className="text-xs text-gray-500 line-clamp-2">{notif.message}</p>
                                                     <p className="text-[10px] text-gray-600 mt-1">{notif.time}</p>
                                                 </div>
-
                                                 <button
                                                     onClick={(e) => { e.stopPropagation(); removeNotif(notif.id); }}
                                                     className="opacity-0 group-hover:opacity-100 p-0.5 hover:bg-white/10 rounded transition-all flex-shrink-0"
@@ -178,4 +167,4 @@ const Header = ({ scrolled }) => {
 };
 
 export default Header;
-      
+                        
